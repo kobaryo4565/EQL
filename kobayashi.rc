@@ -1,0 +1,109 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 (日本) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+MYDLG DIALOGEX 600, 0, 213, 172
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "DELPHINUSカメラの視野シミュレータ "
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "ファイル選択",IDC_STATIC,7,10,98,34
+    PUSHBUTTON      "開く",IDC_BUTTON_OPEN1,13,21,26,18
+    CONTROL         "読み込み完了",IDC_CHECK_DISPLAY1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,44,23,60,14
+    DEFPUSHBUTTON   "表示",ID_OK,124,64,56,13
+    EDITTEXT        IDC_EDIT_H,46,108,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_D,46,92,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MIN,46,123,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_Y,46,63,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_M,46,79,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_S,46,138,40,12,ES_AUTOHSCROLL
+    LTEXT           "年",IDC_STATIC,16,66,14,12
+    LTEXT           "月",IDC_STATIC,16,79,17,12
+    LTEXT           "日",IDC_STATIC,16,95,13,12
+    LTEXT           "時(UT)",IDC_STATIC,16,111,28,12
+    LTEXT           "分",IDC_STATIC,16,124,14,12
+    LTEXT           "秒",IDC_STATIC,16,140,18,12
+    DEFPUSHBUTTON   "アニメーション",ID_Anime,123,87,56,13
+    DEFPUSHBUTTON   "ストップ",ID_STOP,123,110,56,13
+    DEFPUSHBUTTON   "リアルタイム",ID_NOW,123,136,56,13
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    "MYDLG", DIALOG
+    BEGIN
+        RIGHTMARGIN, 212
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // 日本語 (日本) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
