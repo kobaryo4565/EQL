@@ -15,11 +15,11 @@ int total_n2;
 int g = 0;
 
 
-xyz eql, moon, sun, earth, star[5000];
+xyz eql, moon, sun, earth, star[5000], star_mm[5000];
+xyz eql2, sun2, earth2;
 double EQL_MOON, SUN_MOON, EARTH_MOON;
 double s;
-double starx[5000], stary[5000];
-double starx2[5000], stary2[5000];
+double starx_pix[5000], stary_pix[5000];
 
 
 //read_halo *halo;

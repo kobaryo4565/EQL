@@ -113,33 +113,33 @@ LRESULT CALLBACK WndProc_bitmap( HWND hWnd_bitmap, UINT msg, WPARAM wp, LPARAM l
 
 					//ç¿ïWïœä∑ÇS
 					theta = atan2(-sun.x, sun.y);
-					eql = Cordi_Trans2(eql,theta);
-					sun = Cordi_Trans2(sun,theta);
-					earth = Cordi_Trans2(earth,theta);
+					eql2 = Cordi_Trans2(eql,theta);
+					sun2 = Cordi_Trans2(sun,theta);
+					earth2 = Cordi_Trans2(earth,theta);
 					for(i=0; i<=total_n2; i++){
-						star[i] = Cordi_Trans2(star[i], theta);
-						if(star[i].z < 0){
-							star[i].x = star[i].x * (-50 / star[i].z);
-					        star[i].y = star[i].y * (-50 / star[i].z);
+						star_mm[i] = Cordi_Trans2(star[i], theta);
+						if(star_mm[i].z < 0){
+							star_mm[i].x = star_mm[i].x * (-50 / star_mm[i].z);
+					        star_mm[i].y = star_mm[i].y * (-50 / star_mm[i].z);
 
-					       //star[i].x = (star[i].x) / 2 * (988.5 / 10);
-					       //star[i].y = (star[i].y) / 2 * (741 / 10);
+					       starx_pix[i] = (star_mm[i].x) / 2 * (988.5 / 10);
+					       stary_pix[i] = (star_mm[i].y) / 2 * (741 / 10);
 				       }
 					}
 
-					if(sun.y > 0){
+					if(sun2.y > 0){
 					  theta = atan2(-sun.x, sun.y) + M_PI;
-					  eql = Cordi_Trans2(eql,theta);
-					  sun = Cordi_Trans2(sun,theta);
-					  earth = Cordi_Trans2(earth,theta);
+					  eql2 = Cordi_Trans2(eql,theta);
+					  sun2 = Cordi_Trans2(sun,theta);
+					  earth2 = Cordi_Trans2(earth,theta);
 					 for(i=0; i<=total_n2; i++){
-						star[i] = Cordi_Trans2(star[i], theta);
-						if(star[i].z < 0){
-							star[i].x = star[i].x * (-50 / star[i].z);
-					        star[i].y = star[i].y * (-50 / star[i].z);
+						star_mm[i] = Cordi_Trans2(star[i], theta);
+						if(star_mm[i].z < 0){
+							star_mm[i].x = star_mm[i].x * (-50 / star_mm[i].z);
+					        star_mm[i].y = star_mm[i].y * (-50 / star_mm[i].z);
 
-					       //star[i].x = (star[i].x) / 2 * (988.5 / 10);
-					       //star[i].y = (star[i].y) / 2 * (741 / 10);
+					       starx_pix[i] = (star_mm[i].x) / 2 * (988.5 / 10);
+					       stary_pix[i] = (star_mm[i].y) / 2 * (741 / 10);
 				       }
 					}
 					}
@@ -182,9 +182,9 @@ LRESULT CALLBACK WndProc_bitmap( HWND hWnd_bitmap, UINT msg, WPARAM wp, LPARAM l
 						z = sqrtf(-(x*x) - (y*y) + (s / 4 * 1000000 * (rect.right - rect.left) / 10 + 0.5)*(s / 4 * 1000000 * (rect.right - rect.left) / 10 + 0.5));
 						r = sqrtf(x*x + y*y + z*z);
 
-						lam1 = (x*sun.x + y*sun.y + z*sun.z) / (r*SUN_MOON); //ëæózÇÃï˚å¸Ç∆ÇÃì‡êœ
-						lam2 = (x*earth.x + y*earth.y + z*earth.z) / (r*EARTH_MOON); //ínãÖÇÃï˚å¸Ç∆ÇÃì‡êœ
-						lam3 = (x*eql.x + y*eql.y + z*eql.z) / (r*EQL_MOON); //EQLÇÃï˚å¸Ç∆ÇÃì‡êœ
+						lam1 = (x*sun2.x + y*sun2.y + z*sun2.z) / (r*SUN_MOON); //ëæózÇÃï˚å¸Ç∆ÇÃì‡êœ
+						lam2 = (x*earth2.x + y*earth2.y + z*earth2.z) / (r*EARTH_MOON); //ínãÖÇÃï˚å¸Ç∆ÇÃì‡êœ
+						lam3 = (x*eql2.x + y*eql2.y + z*eql2.z) / (r*EQL_MOON); //EQLÇÃï˚å¸Ç∆ÇÃì‡êœ
 
 						if (lam2 > 0) {
 							g_img.lpBmpData[ab] = 224;

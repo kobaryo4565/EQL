@@ -31,6 +31,7 @@ BOOL read_star(HWND, FILE*, int);
 BOOL disp_star_xy(HDC, RECT, HWND);
 int et(int, int, int, int, int, int); //年月日時分秒からj2000からの秒数を計算する関数
 int now(); //J2000から現在までの秒数を計算する関数
+void asdf(time_t);
 
 extern char szBuf[256];	
 extern HWND hWnd;						// 画像用ウィンドウのハンドル
@@ -39,12 +40,12 @@ extern HWND hDlg;						// ダイアログボックスのハンドル
 extern SHORT xs, xe;					// 範囲を指定する時の左右の点に対応するマウス位置
 extern int total_n;
 extern int total_n2;
-extern xyz eql, moon, sun, earth, star[5000];
+extern xyz eql, moon, sun, earth, star[5000], star_mm[5000];
+extern xyz eql2, sun2, earth2;
 extern int g;
 extern double EQL_MOON, SUN_MOON, EARTH_MOON;
 extern double s;
-extern double starx[5000], stary[5000];
-extern double starx2[5000], stary2[5000];
+extern double starx_pix[5000], stary_pix[5000];
 
 
 

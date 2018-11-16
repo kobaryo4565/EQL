@@ -147,73 +147,92 @@ BOOL CALLBACK MyDlgProc( HWND hDlg, UINT msg, WPARAM wp, LPARAM lp )
 					}
 
 					
-
+					//sprintf_s(szBuf, 256, "%lf %lf %lf", star[0].x, star[0].y, star[0].z);
+					//MessageBox(NULL, szBuf, "星データ1", MB_OK);
 		
 					//座標変換１
 					eql = Cordi_Trans1(eql, moon);
 					moon = Cordi_Trans1(moon, moon);
 					sun = Cordi_Trans1(sun, moon);
 					earth = Cordi_Trans1(earth, moon);
+
 					
 				
 					//座標変換２
 					theta = atan2(eql.y, eql.x);
+					sprintf_s(szBuf, 256, "%lf", theta);
+					MessageBox(NULL, szBuf, "角度1", MB_OK);
 					eql = Cordi_Trans2(eql, theta);
 					sun = Cordi_Trans2(sun, theta);
 					earth = Cordi_Trans2(eql, theta);
 					for(i=0; i<=total_n2; i++){
 						star[i] = Cordi_Trans2(star[i], theta);
 					}
+
+					//sprintf_s(szBuf, 256, "%lf %lf %lf", star[0].x, star[0].y, star[0].z);
+					//MessageBox(NULL, szBuf, "星データ2", MB_OK);
 					
 					//座標変換３
 					theta = atan2(eql.x, eql.z);
+					sprintf_s(szBuf, 256, "%lf", theta);
+					MessageBox(NULL, szBuf, "角度2", MB_OK);
 					eql = Cordi_Trans3(eql,theta);
 					sun = Cordi_Trans3(sun,theta);
 					earth = Cordi_Trans3(earth,theta);
 					for(i=0; i<=total_n2; i++){
 						star[i] = Cordi_Trans3(star[i], theta);
 					}
+
+					//sprintf_s(szBuf, 256, "%lf %lf %lf", star[0].x, star[0].y, star[0].z);
+					//MessageBox(NULL, szBuf, "星データ3", MB_OK);
 					
 
 					//座標変換４
 					theta = atan2(-sun.x, sun.y);
-					eql = Cordi_Trans2(eql,theta);
-					sun = Cordi_Trans2(sun,theta);
-					earth = Cordi_Trans2(earth,theta);
+					sprintf_s(szBuf, 256, "%lf", theta);
+					MessageBox(NULL, szBuf, "角度3", MB_OK);
+					eql2 = Cordi_Trans2(eql,theta);
+					sun2 = Cordi_Trans2(sun,theta);
+					earth2 = Cordi_Trans2(earth,theta);
 					for(i=0; i<=total_n2; i++){
-						star[i] = Cordi_Trans2(star[i], theta);
-						if(star[i].z < 0){
-							star[i].x = star[i].x * (-50 / star[i].z);
-					        star[i].y = star[i].y * (-50 / star[i].z);
+						star_mm[i] = Cordi_Trans2(star[i], theta);
+						if(star_mm[i].z < 0){
+							star_mm[i].x = star_mm[i].x * (-50 / star_mm[i].z);
+					        star_mm[i].y = star_mm[i].y * (-50 / star_mm[i].z);
 
-					       starx[i] =  /*(988.5*star[i].x)/20*/(star[i].x) / 2 * (988.5 / 10);
-					       stary[i] = /*(741*star[i].y)/20*/(star[i].y) / 2 * (741 / 10);
+					       starx_pix[i] =  /*(988.5*star[i].x)/20*/(star_mm[i].x) / 2 * (988.5 / 10);
+					       stary_pix[i] = /*(741*star[i].y)/20*/(star_mm[i].y) / 2 * (741 / 10);
 
 						  
 				       }
 					}
 
-					if(sun.y > 0){
-					  theta = atan2(-sun.x, sun.y) + M_PI;
-					  eql = Cordi_Trans2(eql,theta);
-					  sun = Cordi_Trans2(sun,theta);
-					  earth = Cordi_Trans2(earth,theta);
-					 for(i=0; i<=total_n2; i++){
-						star[i] = Cordi_Trans2(star[i], theta);
-						if(star[i].z < 0){
-							star[i].x = star[i].x * (-50 / star[i].z);
-					        star[i].y = star[i].y * (-50 / star[i].z);
+					//sprintf_s(szBuf, 256, "%lf %lf %lf %lf %lf", star[0].x, star[0].y, star[0].z, starx_pix[0],stary_pix[0]);
+					//MessageBox(NULL, szBuf, "星データ4", MB_OK);
 
-					       starx[i] =  /*(988.5*star[i].x)/20*/(star[i].x) / 2 * (988.5 / 10);
-					       stary[i] = /*(741*star[i].y)/20*/(star[i].y) / 2 * (741 / 10);
+					if(sun2.y > 0){
+					  theta = atan2(-sun.x, sun.y) + M_PI;
+					  sprintf_s(szBuf, 256, "%lf", theta);
+					  MessageBox(NULL, szBuf, "角度4", MB_OK);
+					  eql2 = Cordi_Trans2(eql,theta);
+					  sun2 = Cordi_Trans2(sun,theta);
+					  earth2 = Cordi_Trans2(earth,theta);
+					 for(i=0; i<=total_n2; i++){
+						star_mm[i] = Cordi_Trans2(star[i], theta);
+						if(star_mm[i].z < 0){
+							star_mm[i].x = star_mm[i].x * (-50 / star_mm[i].z);
+					        star_mm[i].y = star_mm[i].y * (-50 / star_mm[i].z);
+
+					       starx_pix[i] =  /*(988.5*star[i].x)/20*/(star_mm[i].x) / 2 * (988.5 / 10);
+					       stary_pix[i] = /*(741*star[i].y)/20*/(star_mm[i].y) / 2 * (741 / 10);
 				       }
 
 					}
 					}
 
-
-					sprintf_s(szBuf, 256, "%lf %lf %lf %lf", starx[10], stary[10], star[10].x, star[10].y);
-					MessageBox(NULL, szBuf, "変換後データ", MB_OK);
+					//sprintf_s(szBuf, 256, "%lf %lf %lf %lf %lf", star[0].x, star[0].y, star[0].z, starx_pix[0], stary_pix[0]);
+					//MessageBox(NULL, szBuf, "星データ5", MB_OK);
+					
 
 
 					//g = GetDlgItemInt( hDlg, IDC_EDIT_header2, &number, FALSE );
@@ -221,7 +240,7 @@ BOOL CALLBACK MyDlgProc( HWND hDlg, UINT msg, WPARAM wp, LPARAM lp )
 					return TRUE;
                 
 				case ID_Anime:
-					year = GetDlgItemInt(hDlg, IDC_EDIT_Y, NULL, FALSE);	//エディットボックスから年を読み込む
+					/*year = GetDlgItemInt(hDlg, IDC_EDIT_Y, NULL, FALSE);	//エディットボックスから年を読み込む
 					month = GetDlgItemInt(hDlg, IDC_EDIT_M, NULL, FALSE);	//以下同様
 					day = GetDlgItemInt(hDlg, IDC_EDIT_D, NULL, FALSE);
 					hour = GetDlgItemInt(hDlg, IDC_EDIT_H, NULL, FALSE);
@@ -240,13 +259,14 @@ BOOL CALLBACK MyDlgProc( HWND hDlg, UINT msg, WPARAM wp, LPARAM lp )
 							break;
 						}
 						
-					}
-					SetTimer(hWnd_bitmap, ID_MYTIMER, 5, NULL);
+					}*/
+					SetTimer(hWnd_bitmap, ID_MYTIMER, 30, NULL);
 
 					return TRUE;
 
 				case ID_STOP:
 					KillTimer(hWnd_bitmap, 1);
+					asdf(rh[g].ET);
 					return TRUE;
 
 				case ID_NOW:
@@ -345,9 +365,9 @@ BOOL CALLBACK MyDlgProc( HWND hDlg, UINT msg, WPARAM wp, LPARAM lp )
 
 					//座標変換４
 					theta = atan2(-sun.x, sun.y);
-					eql = Cordi_Trans2(eql,theta);
-					sun = Cordi_Trans2(sun,theta);
-					earth = Cordi_Trans2(earth,theta);
+					eql2 = Cordi_Trans2(eql,theta);
+					sun2 = Cordi_Trans2(sun,theta);
+					earth2 = Cordi_Trans2(earth,theta);
 					for(i=0; i<=total_n2; i++){
 						star[i] = Cordi_Trans2(star[i], theta);
 						if(star[i].z < 0){
@@ -359,19 +379,19 @@ BOOL CALLBACK MyDlgProc( HWND hDlg, UINT msg, WPARAM wp, LPARAM lp )
 				       }
 					}
 
-					if(sun.y > 0){
+					if(sun2.y > 0){
 					  theta = atan2(-sun.x, sun.y) + M_PI;
-					  eql = Cordi_Trans2(eql,theta);
-					  sun = Cordi_Trans2(sun,theta);
-					  earth = Cordi_Trans2(earth,theta);
+					  eql2 = Cordi_Trans2(eql,theta);
+					  sun2 = Cordi_Trans2(sun,theta);
+					  earth2 = Cordi_Trans2(earth,theta);
 					 for(i=0; i<=total_n2; i++){
-						star[i] = Cordi_Trans2(star[i], theta);
-						if(star[i].z < 0){
-							star[i].x = star[i].x * (-50 / star[i].z);
-					        star[i].y = star[i].y * (-50 / star[i].z);
+						star_mm[i] = Cordi_Trans2(star[i], theta);
+						if(star_mm[i].z < 0){
+							star_mm[i].x = star_mm[i].x * (-50 / star_mm[i].z);
+					        star_mm[i].y = star_mm[i].y * (-50 / star_mm[i].z);
 
-					       //star[i].x = (star[i].x) / 2 * (988.5 / 10);
-					       //star[i].y = (star[i].y) / 2 * (741 / 10);
+					       starx_pix[i] = (star_mm[i].x) / 2 * (988.5 / 10);
+					       stary_pix[i] = (star_mm[i].y) / 2 * (741 / 10);
 				       }
 					}
 					}
