@@ -12,6 +12,8 @@
 #include  "resource.h"
 #include <time.h>
 #define ID_MYTIMER 1
+#define ID_MYTIMER_now 2
+#include <tchar.h>
 
 typedef struct {
 	double x,y,z;
@@ -33,6 +35,7 @@ int et(int, int, int, int, int, int); //”NŒ“ú•ª•b‚©‚çj2000‚©‚ç‚Ì•b”‚ğŒvZ‚·‚
 int now(); //J2000‚©‚çŒ»İ‚Ü‚Å‚Ì•b”‚ğŒvZ‚·‚éŠÖ”
 void asdf(time_t);
 
+
 extern char szBuf[256];	
 extern HWND hWnd;						// ‰æ‘œ—pƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
 extern HWND hWnd_bitmap;
@@ -47,6 +50,18 @@ extern double EQL_MOON, SUN_MOON, EARTH_MOON;
 extern double s;
 extern double starx_pix[5000], stary_pix[5000];
 
+//extern char *ch;
+
+extern TCHAR buf[80];
+extern double Time;
+extern double Time_now;
+extern double dt;
+extern double theta;
+extern double RA, DEC; //ÔŒoAÔ
+extern double koukei, koui; //‰©ŒoA‰©ˆÜ
+//extern TCHAR buf_m[80];
+//extern TCHAR buf_d[80];
+//extern TCHAR buf_H[80];
 
 
 

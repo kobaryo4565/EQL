@@ -1,6 +1,7 @@
 #include  "kobayashi.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <windowsx.h>
 
 
 char szClassName[] = "image";	// 全体表示用ウィンドウクラスの名
@@ -13,6 +14,8 @@ SHORT xs, xe;					// 範囲を指定する時の左右の点に対応するマウス位置
 int total_n;
 int total_n2;
 int g = 0;
+
+HINSTANCE hInst;
 
 
 xyz eql, moon, sun, earth, star[5000], star_mm[5000];
@@ -29,6 +32,15 @@ xyz *trans;
 hipdata h[5000]; 
 read_halo rh[30000];
 
+//char *ch;
+
+TCHAR buf[80];
+double Time;
+double Time_now;
+double dt;
+double theta;
+double RA, DEC; //赤経、赤	
+double koukei, koui; //黄経、黄緯
 
 int WINAPI WinMain( HINSTANCE hCurInst, HINSTANCE hPrevInst, LPSTR lpszCmdLine, int nCmdShow )
 {
@@ -40,7 +52,8 @@ int WINAPI WinMain( HINSTANCE hCurInst, HINSTANCE hPrevInst, LPSTR lpszCmdLine, 
 	hDlg = CreateDialog(hCurInst, "MYDLG", HWND_DESKTOP, (DLGPROC)MyDlgProc);
 	ShowWindow(hDlg, nCmdShow);
 	UpdateWindow(hDlg);
-
+	 
+	hInst = hCurInst;
 // プロット用ウィンドウクラスを登録し作成する
 	
 	if (!InitApp_bitmap(hCurInst))

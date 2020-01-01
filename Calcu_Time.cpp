@@ -44,20 +44,17 @@ int now()
 
 	time_t time1 = time(NULL);	//time‚ÍPC‚ÌŒ»İ‚ğ“¾‚ÄAtime_tŒ^‚Ì•Ï”‚ÉŠi”[‚·‚é
 
-	
-
 	return (int)(difftime(time1, time0) - 32400.);	//time‚Å“¾‚ç‚ê‚é‚Í“ú–{ŠÔ‚È‚Ì‚ÅUT‚É‚·‚é‚½‚ß9ŠÔ(32400•b)ˆø‚­B
 }
 
+
 //J2000.0‚©‚ç‚ÌŒo‰ß•b”‚ğ”NŒ“ú•ª•b‚É’¼‚·ŠÖ”
 using namespace std;
-
 void asdf(time_t x){
 	time_t foo = 946728000 + x;
 	tm *bar = gmtime(&foo);
-	char buf[80];
-	strftime(buf,sizeof(buf), "%Y-%m-%d %H:%M:%S",bar);
+	_tcsftime(buf, sizeof(buf)/sizeof(TCHAR), _T("‹¦’è¢ŠE(UTC)\n%Y-%m-%d %H:%M:%S"), bar);
 	cout << buf << endl;
-	sprintf_s(szBuf, 256, "%s", buf);
-	MessageBox(NULL, szBuf, "”NŒ“ú•ª•b", MB_OK);
 }
+
+

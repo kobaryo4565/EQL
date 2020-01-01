@@ -1,7 +1,6 @@
 #include  "kobayashi.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
-//#define ID_MYTIMER 1
 #include <stdlib.h>
 
 typedef struct{
@@ -13,6 +12,7 @@ typedef struct{
 	char *fname;
 	int fsize;
 } IMG;
+
 
 
 LRESULT CALLBACK WndProc_bitmap( HWND hWnd_bitmap, UINT msg, WPARAM wp, LPARAM lp )
@@ -29,21 +29,24 @@ LRESULT CALLBACK WndProc_bitmap( HWND hWnd_bitmap, UINT msg, WPARAM wp, LPARAM l
 	int a, b, ab;
 	double lam1,lam2,lam3;
 	int i;
-	double theta;
 	
-	double RA, DEC; //赤経、赤
-	double koukei, koui; //黄経、黄緯
+	
 
 	switch (msg) {
 
 	case WM_CREATE: //ウインドウが生成されたときに1度だけ通過
 		//時間割り込みの発生タイミングを設定
 		//free(g_img.lpBmpData);
+	    asdf(now());
 		break;
    
 	case WM_TIMER:
-		if (wp != ID_MYTIMER)
-		return (DefWindowProc(hWnd_bitmap, msg, wp, lp));
+
+		switch(wp)
+		{
+		case ID_MYTIMER:
+		//if (wp != ID_MYTIMER)
+		//return (DefWindowProc(hWnd_bitmap, msg, wp, lp));
 					g = g++;
 		           
 					eql.x = rh[g].XEQL;
@@ -143,10 +146,135 @@ LRESULT CALLBACK WndProc_bitmap( HWND hWnd_bitmap, UINT msg, WPARAM wp, LPARAM l
 				       }
 					}
 					}
-					InvalidateRect(hWnd_bitmap, NULL, FALSE);
-		            free(g_img.lpBmpData);
+					//InvalidateRect(hWnd_bitmap, NULL, TRUE);
+					//free(g_img.lpBmpData);
+					asdf(rh[g].ET);
+					break;
 
+		case ID_MYTIMER_now:
+					//if (wp != ID_MYTIMER_now)
+		            //return (DefWindowProc(hWnd_bitmap, msg, wp, lp));
+					Time_now = now();
+					
+					for(i=0; i<=total_n; i++){
+						if(rh[i].ET > Time_now){
+							g = i-1;
+							dt = Time_now - rh[g].ET;
+							break;
+						}
+						
+					}
+
+					eql.x = rh[g].VXEQL * dt + rh[g].XEQL;
+					eql.y = rh[g].VYEQL * dt + rh[g].YEQL;
+					eql.z = rh[g].VZEQL * dt + rh[g].ZEQL;
+
+					moon.x = rh[g].VXMOON * dt + rh[g].XMOON;
+					moon.y = rh[g].VYMOON * dt + rh[g].YMOON;
+					moon.z = rh[g].VZMOON * dt + rh[g].ZMOON;
+
+					sun.x = rh[g].VXSUN * dt + rh[g].XSUN;
+					sun.y = rh[g].VYSUN * dt + rh[g].YSUN;
+					sun.z = rh[g].VZSUN * dt + rh[g].ZSUN;
+
+					earth.x = 0;
+					earth.y = 0;
+					earth.z = 0;
+
+
+					EQL_MOON = sqrtf((moon.x - eql.x)*(moon.x - eql.x) + (moon.y - eql.y)*(moon.y - eql.y) + (moon.z - eql.z)*(moon.z - eql.z));
+		            SUN_MOON = sqrtf(sun.x * sun.x + sun.y * sun.y + sun.z * sun.z);
+		            EARTH_MOON = sqrtf(moon.x * moon.x + moon.y * moon.y + moon.z * moon.z);
+	
+		            //t = 360*3474/(2*M_PI*EQL_MOON);//視直径を計算
+		            s = (3474.0*0.00005) / EQL_MOON; //月の相対的な大きさを計算
+
+					for(i=0; i<=total_n2; i++){
+					 RA = 2*M_PI*(h[i].RA_h + h[i].RA_m/60 + h[i].RA_s/3600)/24; //単位を時で統一
+		             DEC = 2*M_PI*(h[i].Dec_d + h[i].Dec_m/60 + h[i].Dec_s/3600)/360; //単位を度で統一
+		               if (h[i].Dec_sig == FALSE) {
+			              DEC = -DEC;
+		               }
+		             koukei = atan2(sin(M_PI*23.43 / 180)*sin(DEC)+cos(M_PI*23.43 / 180)*cos(DEC)*sin(RA),cos(DEC)*cos(RA)); //単位はrad
+		               if (koukei < 0) {
+			              koukei = koukei + 2 * M_PI; //単位はrad
+		               }
+		             koui = asin(cos(M_PI*23.43 / 180)*sin(DEC) - sin(M_PI*23.43 / 180)*cos(DEC)*sin(RA));
+
+		             star[i].x = cos(koui)*cos(koukei);
+		             star[i].y = cos(koui)*sin(koukei);
+		             star[i].z = sin(koui);
+					}
+
+		
+					//座標変換１
+					eql = Cordi_Trans1(eql, moon);
+					moon = Cordi_Trans1(moon, moon);
+					sun = Cordi_Trans1(sun, moon);
+					earth = Cordi_Trans1(earth, moon);
+					
+				
+					//座標変換２
+					theta = atan2(eql.y, eql.x);
+					eql = Cordi_Trans2(eql, theta);
+					sun = Cordi_Trans2(sun, theta);
+					earth = Cordi_Trans2(eql, theta);
+					for(i=0; i<=total_n2; i++){
+						star[i] = Cordi_Trans2(star[i], theta);
+					}
+
+					//座標変換３
+					theta = atan2(eql.x, eql.z);
+					eql = Cordi_Trans3(eql,theta);
+					sun = Cordi_Trans3(sun,theta);
+					earth = Cordi_Trans3(earth,theta);
+					for(i=0; i<=total_n2; i++){
+						star[i] = Cordi_Trans3(star[i], theta);
+					}
+
+					//座標変換４
+					theta = atan2(-sun.x, sun.y);
+					eql2 = Cordi_Trans2(eql,theta);
+					sun2 = Cordi_Trans2(sun,theta);
+					earth2 = Cordi_Trans2(earth,theta);
+					for(i=0; i<=total_n2; i++){
+						star_mm[i] = Cordi_Trans2(star[i], theta);
+						if(star_mm[i].z < 0){
+							star_mm[i].x = star_mm[i].x * (-50 / star_mm[i].z);
+					        star_mm[i].y = star_mm[i].y * (-50 / star_mm[i].z);
+
+					       starx_pix[i] = (star_mm[i].x) / 2 * (988.5 / 10);
+					       stary_pix[i] = (star_mm[i].y) / 2 * (741 / 10);
+				       }
+					}
+
+					if(sun2.y > 0){
+					  theta = atan2(-sun.x, sun.y) + M_PI;
+					  eql2 = Cordi_Trans2(eql,theta);
+					  sun2 = Cordi_Trans2(sun,theta);
+					  earth2 = Cordi_Trans2(earth,theta);
+					 for(i=0; i<=total_n2; i++){
+						star_mm[i] = Cordi_Trans2(star[i], theta);
+						if(star_mm[i].z < 0){
+							star_mm[i].x = star_mm[i].x * (-50 / star_mm[i].z);
+					        star_mm[i].y = star_mm[i].y * (-50 / star_mm[i].z);
+
+					       starx_pix[i] = (star_mm[i].x) / 2 * (988.5 / 10);
+					       stary_pix[i] = (star_mm[i].y) / 2 * (741 / 10);
+				       }
+					}
+					}
+
+					//InvalidateRect(hWnd_bitmap, NULL, TRUE);
+					//free(g_img.lpBmpData);
+					asdf(Time_now);
+					break;
+					
+			}
+					InvalidateRect(hWnd_bitmap, NULL, FALSE);
+					free(g_img.lpBmpData);
 					return TRUE;
+
 
 	case WM_PAINT:
 		
@@ -227,6 +355,10 @@ LRESULT CALLBACK WndProc_bitmap( HWND hWnd_bitmap, UINT msg, WPARAM wp, LPARAM l
 			StretchBlt(hdc, 0, 0, 988, 741, hdc_mem, 0, 0, 988, 741, SRCCOPY);
 			disp_axes2(hdc, rect);
 			disp_star_xy(hdc, rect, hDlg);
+			//asdf(rh[g].ET);
+			//asdf(now());
+			//TextOut(hdc, 10,10, buf, sizeof(buf)/sizeof(TCHAR));
+			DrawText(hdc, buf, -1, &rect, DT_WORDBREAK);
 			DeleteDC(hdc);
 			DeleteDC(hdc_mem);
 			DeleteObject(hBmp);
@@ -238,7 +370,7 @@ LRESULT CALLBACK WndProc_bitmap( HWND hWnd_bitmap, UINT msg, WPARAM wp, LPARAM l
 	case WM_DESTROY: 
 		if (++g = NULL) 
 			KillTimer(hWnd_bitmap, ID_MYTIMER);
-		
+		KillTimer(hWnd_bitmap, ID_MYTIMER_now);
 		PostQuitMessage(0);
 		free(g_img.lpBmpData);
 	
